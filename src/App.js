@@ -2,7 +2,7 @@ import React from 'react';
 // import * as BooksAPI from './BooksAPI'
 import './App.css';
 import * as booksApi from './BooksAPI';
-import * as _controllers from './Controllers';
+// import * as _controllers from './Controllers';
 import List from './lib/list';
 
 
@@ -29,11 +29,33 @@ class BooksApp extends React.Component {
       // this.refreshBookList = this.refreshBookList.bind(this);
       // this.listChangeHandle = this.listChangeHandle.bind(this);
     }
+    getAllBook(){
+        booksApi.getAll().then((books)=>{
+            let CRBook=[];
+            let WTRBook=[];
+            let RBook=[];
+            for (let _book of books) {
+                switch (_book.shelf) {
+                    case 'currentlyReading':
+                        CRBook.push(_book);
+                        break;
+                    case 'wantToRead':
+                        WTRBook.push(_book);
+                        break;
+                    case 'read':
+                        RBook.push(_book);
+                        break;
+                    default:
+                }
+            };
+    		this.setState({currentlyReading:CRBook,wantToRead:WTRBook,read:RBook});
+        })
+    }
   componentDidMount(){
-
+      this.getAllBook();
   }
   render() {
-      // console.log(this.state._allBook);
+
     return (
       <div className="app">
         {this.state.showSearchPage ? (
@@ -41,14 +63,8 @@ class BooksApp extends React.Component {
             <div className="search-books-bar">
               <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
+                {
+                }
                 <input type="text" placeholder="Search by title or author"/>
 
               </div>
@@ -65,8 +81,7 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 {
-                    <List key={1} name='a'/>
-                    // this.state.partList.map((part) => <list key={part.partTitle} listChange={this.listChangeHandle} info={{ title: part.partTitle, books: this.state[part.partTitle] }} />)
+                    this.state.allList.map((list) => <List key={list.listTitle} info={{title:list.listTitle,books:this.state[list.listTitle]}}/>)
                 }
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Select from './select'
 class Book extends React.Component {
 	constructor() {
         super();
@@ -8,46 +8,23 @@ class Book extends React.Component {
         }
     }
     render() {
-		// const title = this.props.book.title;
-		// const authors = this.props.book.authors;
-		// const url = this.props.book.imageLinks.smallThumbnail;
+		console.log(this.props);
+		const title = this.props.book.title;
+		const authors = this.props.book.authors;
+		const url = this.props.book.imageLinks.smallThumbnail;
 		return(
-			// <li>
-		 	//  <div className="book">
-		 	//    <div className="book-top">
-		 	// 	 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${url}")` }}></div>
-		 	// 	 <div className="book-shelf-changer">
-		 	// 	   <select>
-		 	// 		 <option value="none" disabled>Move to...</option>
-		 	// 		 <option value="currentlyReading">Currently Reading</option>
-		 	// 		 <option value="wantToRead">Want to Read</option>
-		 	// 		 <option value="read">Read</option>
-		 	// 		 <option value="none">None</option>
-		 	// 	   </select>
-		 	// 	 </div>
-		 	//    </div>
-		 	//    <div className="book-title">{title}</div>
-		 	//    <div className="book-authors">{authors}</div>
-		 	//  </div>
-		    // </li>
 			<li>
-			  <div className="book">
-				<div className="book-top">
-				  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }}></div>
-				  <div className="book-shelf-changer">
-					<select>
-					  <option value="none" disabled>Move to...</option>
-					  <option value="currentlyReading">Currently Reading</option>
-					  <option value="wantToRead">Want to Read</option>
-					  <option value="read">Read</option>
-					  <option value="none">None</option>
-					</select>
-				  </div>
-				</div>
-				<div className="book-title">To Kill a Mockingbird</div>
-				<div className="book-authors">Harper Lee</div>
-			  </div>
-			</li>
+		 	 <div className="book">
+		 	   <div className="book-top">
+		 		 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${url}")` }}></div>
+		 		 <div className="book-shelf-changer">
+		 			<Select />
+		 		 </div>
+		 	   </div>
+		 	   <div className="book-title">{title}</div>
+		 	   <div className="book-authors">{authors}</div>
+		 	 </div>
+		    </li>
 		)
     }
 }
