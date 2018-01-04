@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchBooks from './searchBooks';
 import * as booksApi from '../BooksAPI';
+import   {Link}  from 'react-router-dom';
 class SearchBox extends React.Component {
     constructor() {
         super();
@@ -9,6 +10,8 @@ class SearchBox extends React.Component {
 			searchBooks:[]
         }
 		this.searchBook = this.searchBook.bind(this);
+		this.getAllBook = this.getAllBook.bind(this);
+        this.changeShelf = this.changeShelf.bind(this);
     }
 	searchBook(){
         let searchBookName;
@@ -20,11 +23,41 @@ class SearchBox extends React.Component {
             });
         },2000);
     }
+	getAllBook(){
+		booksApi.getAll().then((books)=>{
+			let CRBook=[];
+			let WTRBook=[];
+			let RBook=[];
+			for (let _book of books) {
+				switch (_book.shelf) {
+					case 'currentlyReading':
+						CRBook.push(_book);
+						break;
+					case 'wantToRead':
+						WTRBook.push(_book);
+						break;
+					case 'read':
+						RBook.push(_book);
+						break;
+					default:
+				}
+			};
+			this.setState({currentlyReading:CRBook,wantToRead:WTRBook,read:RBook});
+		})
+	}
+	changeShelf(a,b){
+		booksApi.update(b,a).then((success)=>{
+			// this.getAllBook();
+			this.setState({flashPage:false});
+		},(error)=>{
+			console.log(error);
+		});
+	}
 	render(){
 		return(
 			<div className="search-books">
               <div className="search-books-bar">
-                <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+                <Link to="/" className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</Link>
                 <div className="search-books-input-wrapper">
                   {
 
@@ -37,7 +70,7 @@ class SearchBox extends React.Component {
 
 
                   {this.state.showBooks?(
-                      <SearchBooks changeShelf={this.props.changeShelf} books={this.state.searchBooks}/>
+                      <SearchBooks changeShelf={this.changeShelf} books={this.state.searchBooks}/>
                   ):(
                       <p></p>
                   )}
