@@ -1,13 +1,14 @@
 import React from 'react';
-// import * as BooksAPI from './BooksAPI'
 import './App.css';
 import * as booksApi from './BooksAPI';
-// import * as _controllers from './Controllers';
 import List from './lib/list';
-
-
-
-
+import   {Link}  from 'react-router-dom';
+import SearchBox from './lib/searchBox';
+import ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom'
 class BooksApp extends React.Component {
 
     constructor() {
@@ -21,13 +22,14 @@ class BooksApp extends React.Component {
         currentlyReading: [],
         wantToRead: [],
         read: [],
-        bookIsLoading: true
+        flashPage: true,
+        searchBooks:[],
+        showBooks:false,
       }
 
-      // this.updateBookStatus = this.updateBookStatus.bind(this);
-      // this.getBookList = this.getBookList.bind(this);
-      // this.refreshBookList = this.refreshBookList.bind(this);
-      // this.listChangeHandle = this.listChangeHandle.bind(this);
+      this.getAllBook = this.getAllBook.bind(this);
+      this.changeShelf = this.changeShelf.bind(this);
+      this.searchBook = this.searchBook.bind(this);
     }
     getAllBook(){
         booksApi.getAll().then((books)=>{
@@ -51,28 +53,37 @@ class BooksApp extends React.Component {
     		this.setState({currentlyReading:CRBook,wantToRead:WTRBook,read:RBook});
         })
     }
-  componentDidMount(){
+    changeShelf(a,b){
+        booksApi.update(b,a).then((success)=>{
+            this.getAllBook();
+            this.setState({flashPage:false});
+        },(error)=>{
+            console.log(error);
+        });
+    }
+    searchBook(){
+        let searchBookName;
+        console.log(1);
+        setTimeout(()=>{
+            searchBookName=document.getElementById('searchBox').value;
+            console.log(searchBookName);
+            booksApi.search(searchBookName).then((book)=>{
+                this.setState({showBooks:true , searchBooks:book});
+            });
+        },2000);
+    }
+  componentWillMount(){
       this.getAllBook();
   }
   render() {
-
+      // console.log(typeof this.state.allList);
     return (
+
       <div className="app">
         {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                {
-                }
-                <input type="text" placeholder="Search by title or author"/>
+            
+            <SearchBox showBooks={this.state.showBooks} changeShelf={this.changeShelf} books={this.state.searchBooks} searchBook={this.searchBook}/>
 
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
         ) : (
           <div className="list-books">
             <div className="list-books-title">
@@ -81,16 +92,22 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 {
-                    this.state.allList.map((list) => <List key={list.listTitle} info={{title:list.listTitle,books:this.state[list.listTitle]}}/>)
+                    this.state.allList.map((list) => <List flashPage={this.flashPage} changeShelf={this.changeShelf} key={list.listTitle}  info={{title:list.listTitle,books:this.state[list.listTitle]}}/>)
                 }
               </div>
             </div>
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+
+              <Link to="/Search" onClick={() => this.setState({ showSearchPage: true })}>
+              Add a book
+
+              </Link>
             </div>
           </div>
         )}
+
       </div>
+
     )
   }
 }

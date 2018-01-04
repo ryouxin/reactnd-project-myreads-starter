@@ -8,7 +8,8 @@ class Book extends React.Component {
         }
     }
     render() {
-		console.log(this.props);
+
+		// console.log(this.props);
 		const title = this.props.book.title;
 		const authors = this.props.book.authors;
 		const url = this.props.book.imageLinks.smallThumbnail;
@@ -18,7 +19,7 @@ class Book extends React.Component {
 		 	   <div className="book-top">
 		 		 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${url}")` }}></div>
 		 		 <div className="book-shelf-changer">
-		 			<Select />
+		 			<Select key={title}  book={this.props.book} changeShelf={this.props.changeShelf} />
 		 		 </div>
 		 	   </div>
 		 	   <div className="book-title">{title}</div>
