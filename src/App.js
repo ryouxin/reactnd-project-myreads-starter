@@ -9,8 +9,8 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
+window.changedBooks=[];
 class BooksApp extends React.Component {
-
     constructor() {
       super();
       this.state = {
@@ -37,15 +37,19 @@ class BooksApp extends React.Component {
             let WTRBook=[];
             let RBook=[];
             for (let _book of books) {
+                window.changedBooks.push(_book);
                 switch (_book.shelf) {
                     case 'currentlyReading':
                         CRBook.push(_book);
+                        // window.currentlyReading.push(_book);
                         break;
                     case 'wantToRead':
                         WTRBook.push(_book);
+                        // window.wantToRead.push(_book);
                         break;
                     case 'read':
                         RBook.push(_book);
+                        // window.read.push(_book);
                         break;
                     default:
                 }
@@ -81,8 +85,11 @@ class BooksApp extends React.Component {
 
       <div className="app">
         {this.state.showSearchPage ? (
-            
-            <SearchBox showBooks={this.state.showBooks} changeShelf={this.changeShelf} books={this.state.searchBooks} searchBook={this.searchBook}/>
+
+            <Route path="/search" render={() => (
+                <SearchBox changedBooks={window.changedBooks} currentlyReading={this.state.currentlyReading} wantToRead={this.state.wantToRead} read={this.state.read} showBooks={this.state.showBooks} changeShelf={this.changeShelf} books={this.state.searchBooks} searchBook={this.searchBook}/>
+            )}/>
+
 
         ) : (
           <div className="list-books">

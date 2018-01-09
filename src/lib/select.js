@@ -11,7 +11,7 @@ class Select extends React.Component {
 
 		let shelf ='';
 		(this.props.book.shelf)? (shelf=this.props.book.shelf):(shelf='none');
-		console.log(shelf);
+		// console.log(shelf);
 		const changeShelf = this.props.changeShelf;
 		const book = this.props.book;
 		return(

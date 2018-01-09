@@ -12,6 +12,7 @@ class SearchBox extends React.Component {
 		this.searchBook = this.searchBook.bind(this);
 		this.getAllBook = this.getAllBook.bind(this);
         this.changeShelf = this.changeShelf.bind(this);
+
     }
 	searchBook(){
         let searchBookName;
@@ -19,6 +20,16 @@ class SearchBox extends React.Component {
         setTimeout(()=>{
             searchBookName=document.getElementById('searchBox').value;
             booksApi.search(searchBookName).then((book)=>{
+                console.log(book);
+                for(let a of book){
+                    for(let b of window.changedBooks){
+                        if(a.title==b.title){
+                            a.shelf=b.shelf;
+                        }else{
+                        }
+                    }
+                    console.log(a.shelf);
+                }
                 this.setState({showBooks:true , searchBooks:book});
             });
         },2000);
@@ -54,6 +65,7 @@ class SearchBox extends React.Component {
 		});
 	}
 	render(){
+        console.log(window.changedBooks);
 		return(
 			<div className="search-books">
               <div className="search-books-bar">
@@ -70,7 +82,7 @@ class SearchBox extends React.Component {
 
 
                   {this.state.showBooks?(
-                      <SearchBooks changeShelf={this.changeShelf} books={this.state.searchBooks}/>
+                      <SearchBooks read={window.read} wantToRead={window.wantToRead} currentlyReading={window.currentlyReading} changeShelf={this.changeShelf} books={this.state.searchBooks}/>
                   ):(
                       <p></p>
                   )}

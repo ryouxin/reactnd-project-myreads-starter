@@ -9,6 +9,7 @@ class List extends React.Component {
         }
     }
 	render(){
+        console.log(this.props);
 		return(
 			<div className="bookshelf">
 			  <h2 className="bookshelf-title">{this.props.info.title}</h2>

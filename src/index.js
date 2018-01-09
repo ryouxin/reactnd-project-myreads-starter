@@ -14,7 +14,8 @@ const Index = () => (
   <Router>
     <div>
       <Route exact path="/" component={App} />
-      <Route path="/search" component={SearchBox} />
+      // <Route path="/search" component={SearchBox} />
+
     </div>
   </Router>
 )
